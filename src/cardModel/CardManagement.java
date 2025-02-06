@@ -6,8 +6,10 @@ public class CardManagement implements CardManagementInterface {
     }
 
     public void modifyCard() {
+
     }
 
     public void revokeCard() {
+        
     }
 }
