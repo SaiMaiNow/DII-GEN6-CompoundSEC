@@ -1,7 +1,8 @@
 package cardModel;
 
-public class CardManagement implements Cardinterface {
-    public void addCard(CardAccess cardAccess) {
+public class CardManagement implements CardManagementInterface {
+    public void addCard() {
+
     }
 
     public void modifyCard() {
