@@ -5,10 +5,14 @@ import java.util.ArrayList;
 public class CardManagement implements CardManagementInterface {
     private ArrayList<CardAccess> cardList;
 
-    public void addCard(CardAccess card) {
+    public CardManagement() {
         this.cardList = new ArrayList<>();
+    }
+
+    public void addCard(CardAccess card) {
         this.cardList.add(card);
     }
+
 
     public void modifyCard(String cardId, String newLevel) { 
 
