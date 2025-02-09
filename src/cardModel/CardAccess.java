@@ -1,24 +1,26 @@
 package cardModel;
 
 import java.util.ArrayList;
+
 public class CardAccess extends CardAccessAbstract {
+    private String cardId;
+    private ArrayList<String> cardLevel;
+
+    public CardAccess(String cardLevel) {
+        this.cardId = generateCardId();
+
+        this.cardLevel = new ArrayList<>();
+        this.cardLevel.add(cardLevel);
+    }
+
+
     @Override
     public String getCardNumber() {
-        return "1234567890";
+        return this.cardId;
     }
 
     @Override
     public ArrayList<String> getCardPermission() {
-        return new ArrayList<String>();
-    }
-
-    @Override
-    public String encryptData(String data) {
-        return data;
-    }
-
-    @Override
-    public String decryptData(String data) {
-        return data;
+        return this.cardLevel;
     }
 }
