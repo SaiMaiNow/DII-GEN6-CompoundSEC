@@ -1,4 +1,4 @@
-package cardModel;
+package cardModule;
 
 public interface CardManagementInterface {
     void addCard(CardAccess card);
