@@ -15,7 +15,13 @@ public class CardManagement implements CardManagementInterface {
 
 
     public void modifyCard(String cardId, String newLevel) { 
+        CardAccess card = getCard(cardId);
+        if (card == null) {
+            System.out.println("Card not found");
+            return;
+        }
 
+        card.setCardLevel(newLevel);
     }
 
     public void revokeCard(String cardId) {

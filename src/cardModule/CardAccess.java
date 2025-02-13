@@ -23,4 +23,9 @@ public class CardAccess extends CardAccessAbstract {
     public ArrayList<String> getCardPermission() {
         return this.cardLevel;
     }
+
+    @Override
+    public void setCardLevel(String newLevel) {
+        this.cardLevel.add(newLevel);
+    }
 }

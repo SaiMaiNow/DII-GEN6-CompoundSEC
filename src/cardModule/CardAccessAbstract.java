@@ -6,6 +6,7 @@ import java.util.Random;
 public abstract class CardAccessAbstract {
     public abstract String getCardNumber();
     public abstract ArrayList<String> getCardPermission();
+    public abstract void setCardLevel(String newLevel);
 
     protected String encryptData(String data) {
         return data;
