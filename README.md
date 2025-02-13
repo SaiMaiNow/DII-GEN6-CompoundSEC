@@ -20,3 +20,80 @@ The importances of the project is allow student to do
 - Card generation or modification will be logged with necessary info
 3. Card management 
 - Add, modify, revoke permission of each card
+
+classDiagram
+    %% Core Card Management System
+    class CardAccessAbstract {
+        <<abstract>>
+        +getCardNumber() String
+        +getCardPermission() ArrayList~String~
+        #encryptData(String data) String
+        #decryptData(String data) String
+        #generateCardId() String
+    }
+
+    class CardAccess {
+        -cardId: String
+        -cardLevel: ArrayList~String~
+        +CardAccess(String cardLevel)
+        +getCardNumber() String
+        +getCardPermission() ArrayList~String~
+        +setCardLevel(String newLevel) void
+    }
+
+    class CardManagementInterface {
+        <<interface>>
+        +addCard(CardAccess card) void
+        +modifyCard(String cardId, String newLevel) void
+        +revokeCard(String cardId) void
+        +getCard(String cardId) CardAccess
+    }
+
+    class CardManagement {
+        -cardList: ArrayList~CardAccess~
+        +CardManagement()
+        +addCard(CardAccess card) void
+        +modifyCard(String cardId, String newLevel) void
+        +revokeCard(String cardId) void
+        +getCard(String cardId) CardAccess
+    }
+
+    %% GUI Components
+    class GUIbackend {
+        -cardManager: CardManagement
+        +GUIbackend()
+        +handleCardOperations()
+        +processRequests()
+    }
+
+    class GUIfrontend {
+        -components: JFrame
+        +GUIfrontend()
+        +displayInterface()
+        +updateView()
+    }
+
+    %% Logging System
+    class Logs {
+        -logHistory: ArrayList~String~
+        +logUpdate(String text) void
+        +getLogs() ArrayList~String~
+        +clearLogs() void
+    }
+
+    %% Main Application
+    class Main {
+        +main(String[] args) void
+    }
+
+    %% Relationships
+    CardAccessAbstract <|-- CardAccess : extends
+    CardManagementInterface <|.. CardManagement : implements
+    CardManagement o-- CardAccess : manages
+    Main --> GUIbackend : creates
+    GUIbackend --> CardManagement : uses
+    GUIbackend --> CardAccess : manages
+    Main --> GUIfrontend : creates
+    GUIfrontend --> CardManagement : uses
+    CardManagement --> Logs : logs operations
+    Logs --> GUIbackend : provides logs
