@@ -13,7 +13,6 @@ public class CardManagement implements CardManagementInterface {
         this.cardList.add(card);
     }
 
-
     public void modifyCard(String cardId, String newLevel) { 
         CardAccess card = getCard(cardId);
         if (card == null) {
@@ -25,7 +24,13 @@ public class CardManagement implements CardManagementInterface {
     }
 
     public void revokeCard(String cardId) {
-        
+        CardAccess card = getCard(cardId);
+        if (card == null) {
+            System.out.println("Card not found");
+            return;
+        }
+
+        this.cardList.remove(card);
     }
 
     public CardAccess getCard(String cardId) {
