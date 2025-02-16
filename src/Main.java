@@ -1,7 +1,9 @@
-import guiModule.test;
+import guiModule.GUIManager;
+import guiModule.GUICilent;
 
 public class Main {
     public static void main(String[] args) {
-        test test = new test();
+       new GUIManager();
+       new GUICilent();
     }
 }

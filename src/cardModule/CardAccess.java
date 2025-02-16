@@ -6,13 +6,10 @@ public class CardAccess extends CardAccessAbstract {
     private String cardId;
     private ArrayList<String> cardLevel;
 
-    public CardAccess(String cardLevel) {
+    public CardAccess(ArrayList<String> cardLevel) {
         this.cardId = generateCardId();
-
-        this.cardLevel = new ArrayList<>();
-        this.cardLevel.add(cardLevel);
+        this.cardLevel = cardLevel;
     }
-
 
     @Override
     public String getCardNumber() {
