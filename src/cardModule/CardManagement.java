@@ -1,7 +1,7 @@
 package cardModule;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 public class CardManagement implements CardManagementInterface {
     private ArrayList<CardAccess> cardList;
 
@@ -14,14 +14,19 @@ public class CardManagement implements CardManagementInterface {
         return true;
     }
 
-    public boolean modifyCard(String cardId, String newLevel) { 
+    public boolean modifyCard(String cardId, ArrayList<String> newLevel, Date newExpiryDate) { 
         CardAccess card = getCard(cardId);
         if (card == null) {
             System.out.println("Card not found");
             return false;
         }
 
+        if (newLevel == null) {
+            newLevel = new ArrayList<>();
+        }
+
         card.setCardLevel(newLevel);
+        card.setExpiryDate(newExpiryDate);
         return true;
     }
 
@@ -37,7 +42,12 @@ public class CardManagement implements CardManagementInterface {
     }
 
     public CardAccess getCard(String cardId) {
-        return this.cardList.stream().filter(card -> card.getCardNumber().equals(cardId)).findFirst().orElse(null);
+        if (cardId == null || cardId.isEmpty()) {
+            return null;
+        }
+        
+        String decryptedCardId = decryptData(cardId);
+        return this.cardList.stream().filter(card -> decryptData(card.getCardNumber()).equals(decryptedCardId)).findFirst().orElse(null);
     }
     
     public String decryptData(String data) {

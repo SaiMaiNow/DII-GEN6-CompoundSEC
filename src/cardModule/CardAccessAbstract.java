@@ -7,7 +7,8 @@ import java.util.Date;
 public abstract class CardAccessAbstract {
     public abstract String getCardNumber();
     public abstract ArrayList<String> getCardPermission();
-    public abstract void setCardLevel(String newLevel);
+    public abstract void setCardLevel(ArrayList<String> newLevel);
+    public abstract void setExpiryDate(Date newExpiryDate);
     public abstract Date getExpiryDate();
 
     protected String encryptData(String data) {
