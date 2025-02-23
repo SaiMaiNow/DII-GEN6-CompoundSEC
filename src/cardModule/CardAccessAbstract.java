@@ -9,12 +9,19 @@ public abstract class CardAccessAbstract {
     public abstract void setCardLevel(String newLevel);
 
     protected String encryptData(String data) {
-        return data;
-    };
-
-    protected String decryptData(String data) {
-        return data;
-    };
+        StringBuilder encrypted = new StringBuilder();
+        for (char c : data.toCharArray()) {
+            if (Character.isLetter(c)) {
+                char base = Character.isUpperCase(c) ? 'A' : 'a';
+                encrypted.append((char) (((c - base + 3) % 26) + base));
+            } else if (Character.isDigit(c)) {
+                encrypted.append((char) (((c - '0' + 3) % 10) + '0'));
+            } else {
+                encrypted.append(c);
+            }
+        }
+        return encrypted.toString();
+    }
 
     protected String generateCardId() {
         Random random = new Random();

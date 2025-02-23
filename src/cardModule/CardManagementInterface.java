@@ -5,4 +5,5 @@ public interface CardManagementInterface {
     void modifyCard(String cardId, String newLevel);
     void revokeCard(String cardId);
     CardAccess getCard(String cardId);
+    String decryptData(String data);
 }

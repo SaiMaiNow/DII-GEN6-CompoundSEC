@@ -43,40 +43,70 @@ public class GUIManager {
             public void actionPerformed(ActionEvent e) {
                 JFrame addCardFrame = new JFrame("Add Card");
                 addCardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                addCardFrame.setSize(300, 200);
+                addCardFrame.setSize(400, 300);
+                addCardFrame.setLocationRelativeTo(null);
 
-                JPanel addCardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JPanel addCardPanel = new JPanel(new GridBagLayout());
+                addCardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.insets = new Insets(5, 5, 5, 5);
 
+                JPanel expiryPanel = new JPanel(new BorderLayout(10, 0));
+                expiryPanel.setBorder(BorderFactory.createTitledBorder("Expiry Date"));
+                JSpinner dateSpinner = new JSpinner(new SpinnerDateModel());
+                JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
+                dateSpinner.setEditor(dateEditor);
+                expiryPanel.add(dateSpinner, BorderLayout.CENTER);
+
+                JPanel permissionPanel = new JPanel(new GridLayout(3, 1, 0, 5));
+                permissionPanel.setBorder(BorderFactory.createTitledBorder("Permission Levels"));
                 JCheckBox lowPermission = new JCheckBox("Low");
                 JCheckBox mediumPermission = new JCheckBox("Medium");
                 JCheckBox highPermission = new JCheckBox("High");
-                
-                addCardPanel.add(lowPermission);
-                addCardPanel.add(mediumPermission);
-                addCardPanel.add(highPermission);
 
-                JButton addCardButton = new JButton("Add Card");
-                addCardPanel.add(addCardButton);
+                permissionPanel.add(lowPermission);
+                permissionPanel.add(mediumPermission);
+                permissionPanel.add(highPermission);
 
-                addCardButton.addActionListener(new ActionListener() {
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                JButton confirmButton = new JButton("Add Card");
+                JButton cancelButton = new JButton("Cancel");
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1.0;
+                addCardPanel.add(expiryPanel, gbc);
+
+                gbc.gridy = 1;
+                gbc.insets = new Insets(15, 5, 15, 5);
+                addCardPanel.add(permissionPanel, gbc);
+
+                gbc.gridy = 2;
+                gbc.insets = new Insets(5, 5, 5, 5);
+                addCardPanel.add(buttonPanel, gbc);
+
+                confirmButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
                         ArrayList<String> cardLevel = new ArrayList<>();
-
-                        if (lowPermission.isSelected()) {
+                        if (lowPermission.isSelected())
                             cardLevel.add("Low");
-                        }
-                        
-                        if (mediumPermission.isSelected()) {
+                        if (mediumPermission.isSelected())
                             cardLevel.add("Medium");
-                        }
-
-                        if (highPermission.isSelected()) {
+                        if (highPermission.isSelected())
                             cardLevel.add("High");
-                        }
 
-                        CardAccess card = new CardAccess(cardLevel);
+                        java.util.Date expiryDate = (java.util.Date) dateSpinner.getValue();
+                        CardAccess card = new CardAccess(cardLevel, expiryDate);
                         cardManagement.addCard(card);
+                        addCardFrame.dispose();
+                    }
+                });
+
+                cancelButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
                         addCardFrame.dispose();
                     }
                 });
@@ -99,7 +129,7 @@ public class GUIManager {
 
         JTextArea logsArea = new JTextArea("dadawdawdawdawdadawda");
         logsArea.setEditable(false);
-        
+
         scrollPane.setViewportView(logsArea);
 
         panel.add(scrollPane, BorderLayout.CENTER);
