@@ -27,4 +27,9 @@ public class CardAccess extends CardAccessAbstract {
     public void setCardLevel(String newLevel) {
         this.cardLevel.add(newLevel);
     }
+
+    @Override
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
 }

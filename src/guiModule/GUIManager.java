@@ -51,6 +51,7 @@ public class GUIManager {
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.HORIZONTAL;
                 gbc.insets = new Insets(5, 5, 5, 5);
+                gbc.weightx = 1.0;
 
                 JPanel expiryPanel = new JPanel(new BorderLayout(10, 0));
                 expiryPanel.setBorder(BorderFactory.createTitledBorder("Expiry Date"));
@@ -100,8 +101,15 @@ public class GUIManager {
 
                         java.util.Date expiryDate = (java.util.Date) dateSpinner.getValue();
                         CardAccess card = new CardAccess(cardLevel, expiryDate);
-                        cardManagement.addCard(card);
-                        addCardFrame.dispose();
+                        boolean isAdded = cardManagement.addCard(card);
+                        if (isAdded) {
+                            JOptionPane.showMessageDialog(addCardFrame, "Card added successfully", "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            addCardFrame.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(addCardFrame, "Failed to add card", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 });
 
@@ -113,6 +121,181 @@ public class GUIManager {
 
                 addCardFrame.add(addCardPanel);
                 addCardFrame.setVisible(true);
+            }
+        });
+
+        revokeCardButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame revokeCardFrame = new JFrame("Revoke Card");
+                revokeCardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                revokeCardFrame.setSize(400, 200);
+                revokeCardFrame.setLocationRelativeTo(null);
+
+                JPanel revokeCardPanel = new JPanel(new GridBagLayout());
+                revokeCardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.insets = new Insets(5, 5, 5, 5);
+
+                JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
+                inputPanel.setBorder(BorderFactory.createTitledBorder("Card ID"));
+                JTextField cardIdField = new JTextField(20);
+                inputPanel.add(cardIdField, BorderLayout.CENTER);
+
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                JButton confirmButton = new JButton("Revoke Card");
+                JButton cancelButton = new JButton("Cancel");
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1.0;
+                revokeCardPanel.add(inputPanel, gbc);
+
+                gbc.gridy = 1;
+                gbc.insets = new Insets(15, 5, 5, 5);
+                revokeCardPanel.add(buttonPanel, gbc);
+
+                confirmButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        boolean isRevoked = cardManagement.revokeCard(cardIdField.getText());
+                        if (isRevoked) {
+                            JOptionPane.showMessageDialog(revokeCardFrame, "Card revoked successfully", "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            revokeCardFrame.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(revokeCardFrame, "Failed to revoke card", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+
+                cancelButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        revokeCardFrame.dispose();
+                    }
+                });
+
+                revokeCardFrame.add(revokeCardPanel);
+                revokeCardFrame.setVisible(true);
+            }
+        });
+
+        modifyCardButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame modifyCardFrame = new JFrame("Modify Card");
+                modifyCardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                modifyCardFrame.setSize(400, 200);
+                modifyCardFrame.setLocationRelativeTo(null);
+
+                JPanel modifyCardPanel = new JPanel(new GridBagLayout());
+                modifyCardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.insets = new Insets(5, 5, 5, 5);
+
+                JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
+                inputPanel.setBorder(BorderFactory.createTitledBorder("Card ID"));
+                JTextField cardIdField = new JTextField(20);
+                inputPanel.add(cardIdField, BorderLayout.CENTER);
+
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                JButton confirmButton = new JButton("Revoke Card");
+                JButton cancelButton = new JButton("Cancel");
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1.0;
+                modifyCardPanel.add(inputPanel, gbc);
+
+                gbc.gridy = 1;
+                gbc.insets = new Insets(15, 5, 5, 5);
+                modifyCardPanel.add(buttonPanel, gbc);
+
+                confirmButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        boolean isModified = cardManagement.modifyCard(cardIdField.getText(), "High");
+                        if (isModified) {
+                            modifyCardFrame.dispose();
+
+                            JFrame editFrame = new JFrame("Modify Card");
+                            editFrame.setSize(400, 300);
+                            
+                            JPanel editPanel = new JPanel(new GridBagLayout());
+                            editPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                            GridBagConstraints gbc = new GridBagConstraints();
+                            gbc.fill = GridBagConstraints.HORIZONTAL;
+                            gbc.insets = new Insets(5, 5, 5, 5);
+                            gbc.weightx = 1.0;
+
+                            JPanel expiryPanel = new JPanel(new BorderLayout(10, 0));
+                            expiryPanel.setBorder(BorderFactory.createTitledBorder("Expiry Date"));
+                            JSpinner dateSpinner = new JSpinner(new SpinnerDateModel());
+                            JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
+                            dateSpinner.setEditor(dateEditor);
+                            expiryPanel.add(dateSpinner, BorderLayout.CENTER);
+
+                            JPanel permissionPanel = new JPanel(new GridLayout(3, 1, 0, 5));
+                            permissionPanel.setBorder(BorderFactory.createTitledBorder("Permission Levels"));
+                            JCheckBox lowPermission = new JCheckBox("Low");
+                            JCheckBox mediumPermission = new JCheckBox("Medium");
+                            JCheckBox highPermission = new JCheckBox("High");
+
+                            permissionPanel.add(lowPermission);
+                            permissionPanel.add(mediumPermission);
+                            permissionPanel.add(highPermission);
+
+                            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                            JButton saveButton = new JButton("Save");
+                            JButton cancelButton = new JButton("Cancel");
+                            buttonPanel.add(saveButton);
+                            buttonPanel.add(cancelButton);
+
+                            gbc.gridx = 0;
+                            gbc.gridy = 0;
+                            editPanel.add(expiryPanel, gbc);
+
+                            gbc.gridy = 1;
+                            gbc.insets = new Insets(15, 5, 15, 5);
+                            editPanel.add(permissionPanel, gbc);
+
+                            gbc.gridy = 2;
+                            gbc.insets = new Insets(5, 5, 5, 5);
+                            editPanel.add(buttonPanel, gbc);
+
+                            editFrame.add(editPanel);
+
+                            saveButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    editFrame.dispose();
+                                }
+                            });
+
+                            cancelButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    editFrame.dispose();
+                                }
+                            });
+
+                            editFrame.setLocationRelativeTo(null);
+                            editFrame.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(modifyCardFrame, "Failed to modify card", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+
+                cancelButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        modifyCardFrame.dispose();
+                    }
+                });
+
+                modifyCardFrame.add(modifyCardPanel);
+                modifyCardFrame.setVisible(true);
             }
         });
 

@@ -1,9 +1,9 @@
 package cardModule;
 
 public interface CardManagementInterface {
-    void addCard(CardAccess card);
-    void modifyCard(String cardId, String newLevel);
-    void revokeCard(String cardId);
+    boolean addCard(CardAccess card);
+    boolean modifyCard(String cardId, String newLevel);
+    boolean revokeCard(String cardId);
     CardAccess getCard(String cardId);
     String decryptData(String data);
 }

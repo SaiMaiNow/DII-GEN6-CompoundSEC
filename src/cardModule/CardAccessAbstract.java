@@ -2,11 +2,13 @@ package cardModule;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Date;
 
 public abstract class CardAccessAbstract {
     public abstract String getCardNumber();
     public abstract ArrayList<String> getCardPermission();
     public abstract void setCardLevel(String newLevel);
+    public abstract Date getExpiryDate();
 
     protected String encryptData(String data) {
         StringBuilder encrypted = new StringBuilder();

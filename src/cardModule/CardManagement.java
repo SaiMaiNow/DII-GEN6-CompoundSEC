@@ -9,28 +9,31 @@ public class CardManagement implements CardManagementInterface {
         this.cardList = new ArrayList<>();
     }
 
-    public void addCard(CardAccess card) {
+    public boolean addCard(CardAccess card) {
         this.cardList.add(card);
+        return true;
     }
 
-    public void modifyCard(String cardId, String newLevel) { 
+    public boolean modifyCard(String cardId, String newLevel) { 
         CardAccess card = getCard(cardId);
         if (card == null) {
             System.out.println("Card not found");
-            return;
+            return false;
         }
 
         card.setCardLevel(newLevel);
+        return true;
     }
 
-    public void revokeCard(String cardId) {
+    public boolean revokeCard(String cardId) {
         CardAccess card = getCard(cardId);
         if (card == null) {
             System.out.println("Card not found");
-            return;
+            return false;
         }
 
         this.cardList.remove(card);
+        return true;
     }
 
     public CardAccess getCard(String cardId) {
