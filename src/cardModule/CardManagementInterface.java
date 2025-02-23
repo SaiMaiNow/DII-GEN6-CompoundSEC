@@ -7,5 +7,6 @@ public interface CardManagementInterface {
     boolean modifyCard(String cardId, ArrayList<String> newLevel, Date newExpiryDate);
     boolean revokeCard(String cardId);
     CardAccess getCard(String cardId);
+    ArrayList<CardAccess> getCards();
     String decryptData(String data);
 }

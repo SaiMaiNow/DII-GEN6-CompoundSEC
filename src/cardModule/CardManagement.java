@@ -49,6 +49,10 @@ public class CardManagement implements CardManagementInterface {
         String decryptedCardId = decryptData(cardId);
         return this.cardList.stream().filter(card -> decryptData(card.getCardNumber()).equals(decryptedCardId)).findFirst().orElse(null);
     }
+
+    public ArrayList<CardAccess> getCards() {
+        return this.cardList;
+    }
     
     public String decryptData(String data) {
         StringBuilder decrypted = new StringBuilder();

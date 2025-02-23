@@ -5,8 +5,18 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.util.ArrayList;
+import cardModule.CardAccess;
+import cardModule.CardManagement;
+
+
 public class GUICilent {
-    public GUICilent() {
+    private CardManagement cardManagement;
+    private JPanel cardContainer;
+    private String selectedCard;
+
+    public GUICilent(CardManagement cardManagement) {
+        this.cardManagement = cardManagement;
         JFrame frame = new JFrame("Client View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 400);
@@ -19,7 +29,7 @@ public class GUICilent {
         roomContainer.setBorder(BorderFactory.createTitledBorder("Room Selection"));
         roomContainer.add(RoomPanel());
         
-        JPanel cardContainer = new JPanel();
+        cardContainer = new JPanel();
         cardContainer.setLayout(new BoxLayout(cardContainer, BoxLayout.Y_AXIS));
         cardContainer.setBorder(BorderFactory.createTitledBorder("Card Information"));
         cardContainer.add(CardPanel());
@@ -55,7 +65,43 @@ public class GUICilent {
 
             roomButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // comeing soon...
+                    if (selectedCard.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, 
+                            "Please select a card first", 
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    
+                    String roomNumber = roomButton.getText().replaceAll("Room ", "");
+                    int roomNum = Integer.parseInt(roomNumber);
+                    CardAccess selectedCardObj = cardManagement.getCard(selectedCard);
+                    ArrayList<String> Permission = selectedCardObj.getCardPermission();
+                    
+                    boolean hasAccess = false;
+                    String selectedPermission = "Not Permission";
+                    if (roomNum >= 8) {
+                        hasAccess = Permission.contains("High");
+                        selectedPermission = "High";
+                    } else if (roomNum >= 4) {
+                        hasAccess = Permission.contains("Medium");
+                        selectedPermission = "Medium";
+                    } else {
+                        hasAccess = Permission.contains("Low");
+                        selectedPermission = "Low";
+                    }
+                    
+                    if (hasAccess) {
+                        JOptionPane.showMessageDialog(null,
+                            "Selected Room: " + roomNumber + "\nCard ID: " + selectedCard + "\nPermission: " + selectedPermission,
+                            "Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                            "Access Denied: does not have permission for this room",
+                            "Access Denied",
+                            JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             });
 
@@ -74,15 +120,18 @@ public class GUICilent {
         cardInPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         final JButton[] selectedButton = {null};
-
-        for (int i = 1; i <= 4; i++) {
+        selectedCard = "";
+        ArrayList<CardAccess> cards = cardManagement.getCards();
+        
+        for (int i = 0; i < Math.min(4, cards.size()); i++) {
+            CardAccess card = cards.get(i);
             JButton cardButton = new JButton();
             cardButton.setPreferredSize(new Dimension(280, 60));
             cardButton.setBackground(new Color(255, 223, 186));
-            
-            JLabel number = new JLabel(String.valueOf(i));
-            cardButton.add(number);
-            
+
+            JLabel cardInfo = new JLabel(String.format("CardID: %s - Expiry Date: %s", card.getCardNumber(), card.getExpiryDate()));
+            cardButton.add(cardInfo);
+    
             cardButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (selectedButton[0] != null) {
@@ -91,6 +140,7 @@ public class GUICilent {
 
                     cardButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
                     selectedButton[0] = cardButton;
+                    selectedCard = card.getCardNumber();
                 }
             });
             
@@ -101,5 +151,12 @@ public class GUICilent {
         cardsDisplayPanel.add(Box.createVerticalGlue());
 
         return cardsDisplayPanel;
+    }
+
+    public void refreshCardPanel() {
+        cardContainer.removeAll();
+        cardContainer.add(CardPanel());
+        cardContainer.revalidate();
+        cardContainer.repaint();
     }
 }
