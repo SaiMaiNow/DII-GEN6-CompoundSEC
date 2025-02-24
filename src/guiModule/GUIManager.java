@@ -13,11 +13,11 @@ import java.util.ArrayList;
 public class GUIManager {
     private CardManagement cardManagement;
 
-    private GUICilent guiCilent;
+    private GUIClient guiClient;
 
-    public GUIManager(CardManagement cardManagement, GUICilent guiCilent) {
+    public GUIManager(CardManagement cardManagement, GUIClient guiClient) {
         this.cardManagement = cardManagement;
-        this.guiCilent = guiCilent;
+        this.guiClient = guiClient;
         initializeUI();
     }
 
@@ -109,7 +109,7 @@ public class GUIManager {
                             JOptionPane.showMessageDialog(addCardFrame, "Card added successfully", "Success",
                                     JOptionPane.INFORMATION_MESSAGE);
                             addCardFrame.dispose();
-                            guiCilent.refreshCardPanel();
+                            guiClient.refreshCardPanel();
                         } else {
                             JOptionPane.showMessageDialog(addCardFrame, "Failed to add card", "Error",
                                     JOptionPane.ERROR_MESSAGE);
@@ -168,7 +168,7 @@ public class GUIManager {
                             JOptionPane.showMessageDialog(revokeCardFrame, "Card revoked successfully", "Success",
                                     JOptionPane.INFORMATION_MESSAGE);
                             revokeCardFrame.dispose();
-                            guiCilent.refreshCardPanel();
+                            guiClient.refreshCardPanel();
                         } else {
                             JOptionPane.showMessageDialog(revokeCardFrame, "Failed to revoke card", "Error",
                                     JOptionPane.ERROR_MESSAGE);

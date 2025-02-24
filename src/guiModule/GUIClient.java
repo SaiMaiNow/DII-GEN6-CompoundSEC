@@ -10,12 +10,12 @@ import cardModule.CardAccess;
 import cardModule.CardManagement;
 
 
-public class GUICilent {
+public class GUIClient {
     private CardManagement cardManagement;
     private JPanel cardContainer;
     private String selectedCard;
 
-    public GUICilent(CardManagement cardManagement) {
+    public GUIClient(CardManagement cardManagement) {
         this.cardManagement = cardManagement;
         JFrame frame = new JFrame("Client View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
