@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 
 import java.util.ArrayList;
 import cardModule.CardAccess;
 import cardModule.CardManagement;
-
 
 public class GUIClient {
     private CardManagement cardManagement;
@@ -77,9 +77,18 @@ public class GUIClient {
                     int roomNum = Integer.parseInt(roomNumber);
                     CardAccess selectedCardObj = cardManagement.getCard(selectedCard);
                     ArrayList<String> Permission = selectedCardObj.getCardPermission();
+                    Date expiryDate = selectedCardObj.getExpiryDate();
+                    if (expiryDate.before(new Date())) {
+                        JOptionPane.showMessageDialog(null,
+                            "Card has expired",
+                            "Expired",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     
                     boolean hasAccess = false;
                     String selectedPermission = "Not Permission";
+
                     if (roomNum >= 8) {
                         hasAccess = Permission.contains("High");
                         selectedPermission = "High";

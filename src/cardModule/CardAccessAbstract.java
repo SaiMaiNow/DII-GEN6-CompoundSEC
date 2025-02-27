@@ -12,13 +12,16 @@ public abstract class CardAccessAbstract {
     public abstract Date getExpiryDate();
 
     protected String encryptData(String data) {
+        long currentTime = System.currentTimeMillis() / 1000;
+        int timeShift = (int)(currentTime % 10);
+        
         StringBuilder encrypted = new StringBuilder();
         for (char c : data.toCharArray()) {
             if (Character.isLetter(c)) {
                 char base = Character.isUpperCase(c) ? 'A' : 'a';
-                encrypted.append((char) (((c - base + 3) % 26) + base));
+                encrypted.append((char) (((c - base + timeShift) % 26) + base));
             } else if (Character.isDigit(c)) {
-                encrypted.append((char) (((c - '0' + 3) % 10) + '0'));
+                encrypted.append((char) (((c - '0' + timeShift) % 10) + '0'));
             } else {
                 encrypted.append(c);
             }

@@ -8,5 +8,4 @@ public interface CardManagementInterface {
     boolean revokeCard(String cardId);
     CardAccess getCard(String cardId);
     ArrayList<CardAccess> getCards();
-    String decryptData(String data);
 }

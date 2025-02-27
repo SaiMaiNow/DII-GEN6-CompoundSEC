@@ -3,17 +3,14 @@ package cardModule;
 import java.util.ArrayList;
 import java.util.Date;
 public class CardAccess extends CardAccessAbstract {
-    private final String cardId;
+    private final String cardNumber;
     private ArrayList<String> cardLevel;
     private Date expiryDate;
-    private final String cardNumber;
 
     public CardAccess(ArrayList<String> cardLevel, Date expiryDate) {
-        this.cardId = generateCardId();
-        this.cardNumber = encryptData(this.cardId);
+        this.cardNumber = encryptData(generateCardId());
         this.cardLevel = cardLevel;
         this.expiryDate = expiryDate;
-        System.out.println(this.cardNumber);
     }
 
     @Override

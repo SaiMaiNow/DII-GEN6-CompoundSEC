@@ -297,6 +297,8 @@ public class GUIManager {
                                     if (highPermission.isSelected())
                                         cardLevel.add("High");
                                     cardManagement.modifyCard(cardIdField.getText(), cardLevel, (java.util.Date) dateSpinner.getValue());
+                                    JOptionPane.showMessageDialog(editFrame, "Card modified successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                    guiClient.refreshCardPanel();
                                     editFrame.dispose();
                                 }
                             });
