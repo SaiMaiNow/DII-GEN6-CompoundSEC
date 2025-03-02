@@ -1,9 +1,9 @@
+import cardModule.management.CardManagement;
 import guiModule.GUIManager;
 import guiModule.GUIClient;
-import cardModule.CardManagement;
 public class Main {
     public static void main(String[] args) {
-        CardManagement cardManagement = new CardManagement();
+        CardManagement cardManagement = CardManagement.getInstance();
         new GUIManager(cardManagement, new GUIClient(cardManagement));
     }
 }

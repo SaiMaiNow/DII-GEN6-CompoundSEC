@@ -7,17 +7,21 @@ import java.awt.event.ActionEvent;
 import java.util.Date;
 
 import java.util.ArrayList;
-import cardModule.CardAccess;
-import cardModule.CardManagement;
-import cardModule.Logs;
+import cardModule.card.CardAccess;
+import cardModule.management.CardManagement;
+import cardModule.logging.Logs;
+import cardModule.room.RoomAccess;
+import cardModule.room.RoomAccessImpl;
 
 public class GUIClient {
     private CardManagement cardManagement;
+    private RoomAccess roomAccess;
     private JPanel cardContainer;
     private String selectedCard;
 
     public GUIClient(CardManagement cardManagement) {
         this.cardManagement = cardManagement;
+        this.roomAccess = new RoomAccessImpl(cardManagement);
         JFrame frame = new JFrame("Client View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 400);
@@ -75,44 +79,31 @@ public class GUIClient {
                     }
                     
                     String roomNumber = roomButton.getText().replaceAll("Room ", "");
-                    int roomNum = Integer.parseInt(roomNumber);
                     CardAccess selectedCardObj = cardManagement.getCard(selectedCard);
-                    ArrayList<String> Permission = selectedCardObj.getCardPermission();
-                    Date expiryDate = selectedCardObj.getExpiryDate();
-                    if (expiryDate.before(new Date())) {
+                    
+                    if (selectedCardObj.getExpiryDate().before(new Date())) {
                         JOptionPane.showMessageDialog(null,
                             "Card has expired",
                             "Expired",
                             JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    
-                    boolean hasAccess = false;
-                    String selectedPermission = "Not Permission";
 
-                    if (roomNum >= 8) {
-                        hasAccess = Permission.contains("High");
-                        selectedPermission = "High";
-                    } else if (roomNum >= 4) {
-                        hasAccess = Permission.contains("Medium");
-                        selectedPermission = "Medium";
-                    } else {
-                        hasAccess = Permission.contains("Low");
-                        selectedPermission = "Low";
-                    }
+                    String requiredPermission = roomAccess.getRequiredPermissionLevel(Integer.parseInt(roomNumber));
+                    boolean hasAccess = roomAccess.checkAccess(roomNumber, selectedCard);
                     
                     if (hasAccess) {
                         JOptionPane.showMessageDialog(null,
-                            "Selected Room: " + roomNumber + "\nCard ID: " + selectedCard + "\nPermission: " + selectedPermission,
+                            "Selected Room: " + roomNumber + "\nCard ID: " + selectedCard + "\nPermission: " + requiredPermission,
                             "Confirmation",
                             JOptionPane.INFORMATION_MESSAGE);
-                        Logs.logUpdate("Access granted - Room: " + roomNumber + ", Card: " + selectedCard + ", Permission: " + selectedPermission);
+                        Logs.logUpdate("Access granted - Room: " + roomNumber + ", Card: " + selectedCard + ", Permission: " + requiredPermission);
                     } else {
                         JOptionPane.showMessageDialog(null,
                             "Access Denied: does not have permission for this room",
                             "Access Denied",
                             JOptionPane.ERROR_MESSAGE);
-                        Logs.logUpdate("Access denied - Room: " + roomNumber + ", Card: " + selectedCard + ", Required Permission: " + selectedPermission);
+                        Logs.logUpdate("Access denied - Room: " + roomNumber + ", Card: " + selectedCard + ", Required Permission: " + requiredPermission);
                     }
                 }
             });

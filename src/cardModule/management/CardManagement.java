@@ -1,12 +1,24 @@
-package cardModule;
+package cardModule.management;
 
 import java.util.ArrayList;
 import java.util.Date;
+import cardModule.card.CardAccess;
+import cardModule.card.CardManagementInterface;
+import cardModule.logging.Logs;
+
 public class CardManagement implements CardManagementInterface {
+    private static CardManagement instance;
     private ArrayList<CardAccess> cardList;
 
-    public CardManagement() {
+    private CardManagement() {
         this.cardList = new ArrayList<>();
+    }
+
+    public static CardManagement getInstance() {
+        if (instance == null) {
+            instance = new CardManagement();
+        }
+        return instance;
     }
 
     public boolean addCard(CardAccess card) {

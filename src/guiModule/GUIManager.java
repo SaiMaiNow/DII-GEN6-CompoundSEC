@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import cardModule.CardAccess;
-import cardModule.CardManagement;
+import cardModule.card.CardAccess;
+import cardModule.management.CardManagement;
+import cardModule.logging.Logs;
 
 import java.util.ArrayList;
 
@@ -355,7 +356,7 @@ public class GUIManager {
         JButton clearButton = new JButton("Clear Logs");
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardModule.Logs.clearLogs();
+                Logs.clearLogs();
                 updateLogs(logsArea);
             }
         });
@@ -376,7 +377,7 @@ public class GUIManager {
     }
 
     private void updateLogs(JTextArea logsArea) {
-        ArrayList<String> logs = cardModule.Logs.getLogs();
+        ArrayList<String> logs = Logs.getLogs();
         StringBuilder sb = new StringBuilder();
         for (String log : logs) {
             sb.append(log).append("\n");

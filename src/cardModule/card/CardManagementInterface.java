@@ -1,4 +1,4 @@
-package cardModule;
+package cardModule.card;
 
 import java.util.Date;
 import java.util.ArrayList;
