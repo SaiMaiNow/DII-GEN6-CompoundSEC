@@ -15,8 +15,9 @@ public class CardManagement implements CardManagementInterface {
         return true;
     }
 
-    public boolean modifyCard(String cardId, ArrayList<String> newLevel, Date newExpiryDate) { 
+    public boolean modifyCard(String cardId, ArrayList<String> newLevel, Date newExpiryDate) {
         CardAccess card = getCard(cardId);
+
         if (card == null) {
             Logs.logUpdate("Failed to modify card: Card not found - " + cardId);
             return false;
@@ -26,9 +27,20 @@ public class CardManagement implements CardManagementInterface {
             newLevel = new ArrayList<>();
         }
 
+        ArrayList<String> oldLevel = card.getCardPermission();
+        Date oldExpiryDate = card.getExpiryDate();
+
         card.setCardLevel(newLevel);
         card.setExpiryDate(newExpiryDate);
-        Logs.logUpdate("Card modified: " + cardId + " - New levels: " + newLevel);
+
+        if (!newLevel.equals(oldLevel)) {
+            Logs.logUpdate("Card modified: " + cardId + " - New levels: " + newLevel);
+        }
+
+        if (!newExpiryDate.equals(oldExpiryDate)) {
+            Logs.logUpdate("Card modified: " + cardId + " - New expiry date: " + newExpiryDate);
+        }
+
         return true;
     }
 
