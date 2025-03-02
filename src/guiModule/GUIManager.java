@@ -339,12 +339,49 @@ public class GUIManager {
         panel.setBorder(BorderFactory.createTitledBorder("Logs"));
         JScrollPane scrollPane = new JScrollPane();
 
-        JTextArea logsArea = new JTextArea("dadawdawdawdawdadawda");
+        JTextArea logsArea = new JTextArea();
         logsArea.setEditable(false);
+        logsArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+
+        // Create refresh button
+        JButton refreshButton = new JButton("Refresh Logs");
+        refreshButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updateLogs(logsArea);
+            }
+        });
+
+        // Create clear button
+        JButton clearButton = new JButton("Clear Logs");
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardModule.Logs.clearLogs();
+                updateLogs(logsArea);
+            }
+        });
+
+        // Add buttons panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(refreshButton);
+        buttonPanel.add(clearButton);
 
         scrollPane.setViewportView(logsArea);
-
         panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Initial logs update
+        updateLogs(logsArea);
+
         return panel;
+    }
+
+    private void updateLogs(JTextArea logsArea) {
+        ArrayList<String> logs = cardModule.Logs.getLogs();
+        StringBuilder sb = new StringBuilder();
+        for (String log : logs) {
+            sb.append(log).append("\n");
+        }
+        logsArea.setText(sb.toString());
+        logsArea.setCaretPosition(logsArea.getDocument().getLength());
     }
 }

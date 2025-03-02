@@ -11,13 +11,14 @@ public class CardManagement implements CardManagementInterface {
 
     public boolean addCard(CardAccess card) {
         this.cardList.add(card);
+        Logs.logUpdate("Card added: " + card.getCardNumber());
         return true;
     }
 
     public boolean modifyCard(String cardId, ArrayList<String> newLevel, Date newExpiryDate) { 
         CardAccess card = getCard(cardId);
         if (card == null) {
-            System.out.println("Card not found");
+            Logs.logUpdate("Failed to modify card: Card not found - " + cardId);
             return false;
         }
 
@@ -27,17 +28,19 @@ public class CardManagement implements CardManagementInterface {
 
         card.setCardLevel(newLevel);
         card.setExpiryDate(newExpiryDate);
+        Logs.logUpdate("Card modified: " + cardId + " - New levels: " + newLevel);
         return true;
     }
 
     public boolean revokeCard(String cardId) {
         CardAccess card = getCard(cardId);
         if (card == null) {
-            System.out.println("Card not found");
+            Logs.logUpdate("Failed to revoke card: Card not found - " + cardId);
             return false;
         }
 
         this.cardList.remove(card);
+        Logs.logUpdate("Card revoked: " + cardId);
         return true;
     }
 

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import cardModule.CardAccess;
 import cardModule.CardManagement;
+import cardModule.Logs;
 
 public class GUIClient {
     private CardManagement cardManagement;
@@ -105,11 +106,13 @@ public class GUIClient {
                             "Selected Room: " + roomNumber + "\nCard ID: " + selectedCard + "\nPermission: " + selectedPermission,
                             "Confirmation",
                             JOptionPane.INFORMATION_MESSAGE);
+                        Logs.logUpdate("Access granted - Room: " + roomNumber + ", Card: " + selectedCard + ", Permission: " + selectedPermission);
                     } else {
                         JOptionPane.showMessageDialog(null,
                             "Access Denied: does not have permission for this room",
                             "Access Denied",
                             JOptionPane.ERROR_MESSAGE);
+                        Logs.logUpdate("Access denied - Room: " + roomNumber + ", Card: " + selectedCard + ", Required Permission: " + selectedPermission);
                     }
                 }
             });
